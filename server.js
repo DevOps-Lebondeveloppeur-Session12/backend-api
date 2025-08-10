@@ -36,11 +36,11 @@ connectDB();
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("Server is running!jsdhjfjh");
+  res.send("Server is running!");
 });
 
 app.get("/hello", (req, res) => {
-  res.send("Hello Le bon developpeur Community ! 🚀");
+  res.send("Hello Le bon developpeur Community ! - new feature 🚀");
 });
 
 app.get("/health", async (req, res) => {
