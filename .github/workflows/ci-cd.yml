@@ -42,7 +42,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [unit-test-job]  
     steps:
-      
+
       - name: Clone Source Code
         uses: actions/checkout@v4
 
@@ -57,3 +57,35 @@ jobs:
 
       - name: Push Docker image 
         run: docker push ${{ env.IMAGE_NAME }}
+
+
+  # ✅ Deploy to VPS
+  deploy-job:
+    runs-on: ubuntu-latest
+    needs: build-and-push-job  
+   
+    steps:
+      
+      - name: Connect to the VPS using SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_PASSWORD }}
+     
+          script: |
+
+            # Pull the latest Docker image
+            sudo docker pull ${{ env.IMAGE_NAME }}
+
+            # Remove the old container if it exists
+            sudo docker rm -f backend-api 
+
+            # Run the new container with environment variables
+            sudo docker run -d \
+              --name backend-api \
+              --network backend-api-net \
+              -p 3001:3001 \
+              -e MONGO_URI=${{ secrets.MONGO_URI }} \
+              --restart=always \
+              ${{ env.IMAGE_NAME }}
