@@ -49,6 +49,10 @@ app.get("/go", (req, res) => {
 });
 
 
+app.get("/feature", (req, res) => {
+  res.send("Feature available 🚀.");
+});
+
 app.get("/health", async (req, res) => {
   const start = Date.now();
   try {
