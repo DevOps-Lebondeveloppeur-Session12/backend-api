@@ -45,7 +45,7 @@ app.get("/hello", (req, res) => {
 
 
 app.get("/go", (req, res) => {
-  res.send("Go 🚀.");
+  res.send("Go ...🚀.");
 });
 
 
